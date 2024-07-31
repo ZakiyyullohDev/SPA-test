@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Single Page Application</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+nav {
+    background-color: #333;
+    padding: 10px;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+nav ul li {
+    float: left;
+}
+
+nav ul li a {
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+nav ul li a:hover {
+    background-color: #111;
+}
+
+#content {
+    padding: 20px;
+}
+
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/home" data-link>Home</a></li>
+            <li><a href="/about" data-link>About</a></li>
+            <li><a href="/contact" data-link>Contact</a></li>
+        </ul>
+    </nav>
+
+    <div id="content">
+        <!-- Content will be loaded here -->
+    </div>
+
+    <script>
+        const routes = {
+    '/home': '<h1>Home Page</h1><p>Welcome to the home page!</p>',
+    '/about': '<h1>About Page</h1><p>Learn more about us on this page.</p>',
+    '/contact': '<h1>Contact Page</h1><p>Contact us through this page.</p>'
+};
+
+function router() {
+    const path = window.location.pathname;
+    const content = routes[path] || '<h1>404</h1><p>Page not found.</p>';
+    document.getElementById('content').innerHTML = content;
+}
+
+function navigate(event) {
+    event.preventDefault();
+    const path = event.target.href;
+    history.pushState(null, null, path);
+    router();
+}
+
+window.addEventListener('popstate', router);
+window.addEventListener('load', router);
+
+document.querySelectorAll('a[data-link]').forEach(link => {
+    link.addEventListener('click', navigate);
+});
+
+    </script>
+</body>
+</html>
